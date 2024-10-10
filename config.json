@@ -1,0 +1,7 @@
+{
+    "setup": true,
+    "title": {
+        "old_title": false,
+        "new_title": true
+    }
+}
