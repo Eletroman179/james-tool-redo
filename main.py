@@ -113,7 +113,7 @@ def update():
     download_github(owner, repo, "main.py", "main.py")
 
     # Ask the user to update/reset config.json
-    print("Do you want to update/reset 'config.json' [Y/N]?")
+    print("\rDo you want to update/reset 'config.json' [Y/N] [3]",end="\r")
 
     # Start a timer for 3 seconds
     start_time = time.time()
@@ -121,6 +121,7 @@ def update():
 
     while True:
         # Check for keyboard input
+        print(f"\rDo you want to update/reset 'config.json' [Y/N] [{str(int(time.time() - start_time + 1))}]",end="\r")
         if keyboard.is_pressed("y"):
             download_github(owner, repo, "config.json", "config.json")
             break
