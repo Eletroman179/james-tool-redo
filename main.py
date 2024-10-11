@@ -135,10 +135,12 @@ def gradient_background(start_hex, end_hex, steps):
 
         # Set background color
         set_background_color(f'#{r:02X}{g:02X}{b:02X}')
-        t.sleep(0.1)  # Delay to see the gradient effect
+        t.sleep(0.05)  # Delay to see the gradient effect
 
 def bang():
-    clear()
+    clear(nom=False)
+    set_background_color('#FFFFFF')
+    t.sleep(2)
     gradient_background('#FFFFFF', '#000000', steps=50)
     clear()
 
@@ -289,4 +291,4 @@ if __name__ == "__main__":
         with open("config.json", "w") as file:
             json.dump(data, file, indent=4)
     except KeyboardInterrupt:
-        print("\nProgram terminated.")
+        print(f"\n{Fore.RED}Program terminated.{Fore.RESET}")
