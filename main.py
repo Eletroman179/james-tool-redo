@@ -135,6 +135,7 @@ def update():
             break
         if keyboard.is_pressed("s"):
             stop = not stop
+            time.sleep(1)
         # Break the loop after 3 seconds
         if time.time() - start_time > wait_time and not stop:
             print("\nTime's up! No update will be made.")
