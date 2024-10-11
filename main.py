@@ -364,7 +364,7 @@ def main():
 if __name__ == "__main__":
     try:
         clear(nom=False)
-        if not update(): #
+        if not update():
             load()
             main()
             with open("config.json", "w") as file:
