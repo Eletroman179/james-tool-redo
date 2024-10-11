@@ -328,7 +328,8 @@ commands = {
     "cls": clear,
     "clear": clear,
     "time": lambda: print(time.ctime()),
-    "bang": bang
+    "bang": bang,
+    "hak": hak
 }
 
 bypass = False
