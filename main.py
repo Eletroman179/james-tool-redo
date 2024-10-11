@@ -10,6 +10,7 @@ import json
 import sys
 import os
 
+# init colorama
 init(autoreset=True)
 
 oldJt = Fore.LIGHTCYAN_EX + """
