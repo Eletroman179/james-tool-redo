@@ -1,5 +1,7 @@
 import requests
 import os
+import keyboard
+import time
 
 def download_github(owner, repo, path, save_filename):
     """
@@ -31,7 +33,7 @@ def download_github(owner, repo, path, save_filename):
         try:
             # If it's a text file, decode the content
             remote_content = response.content.decode('utf-8')
-            #print(remote_content)  # Print the entire file content
+            print(remote_content)  # Print the entire file content
             
             # Check if the file already exists locally
             if os.path.exists(save_path):
@@ -66,6 +68,22 @@ repo = "james-tool-redo"  # Repository name
 # Download the "main.py" file and save it in the same directory as this script
 download_github(owner, repo, "main.py", "main.py")
 
-# If the user chooses to update/reset config.json, download it too
-if input("Update/reset config.json? (yes/no)\n").strip().lower() == "yes":
-    download_github(owner, repo, "config.json", "config.json")
+# Ask the user to update/reset config.json
+print("Do you want to update/reset 'config.json' [Y/N]?")
+
+# Start a timer for 3 seconds
+start_time = time.time()
+wait_time = 3  # Wait for 3 seconds
+
+while True:
+    # Check for keyboard input
+    if keyboard.is_pressed("y"):
+        download_github(owner, repo, "config.json", "config.json")
+        break
+    if keyboard.is_pressed("n"):
+        print("Update canceled.")
+        break
+    # Break the loop after 3 seconds
+    if time.time() - start_time > wait_time:
+        print("\nTime's up! No update will be made.")
+        break
