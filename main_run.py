@@ -2,7 +2,7 @@ import pyautogui
 import time
 import os
 
-cd = os.getcwd()
+cd = os.getcwd() #
 
 pyautogui.press("win")
 pyautogui.typewrite("cmd")

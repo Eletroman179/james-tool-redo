@@ -111,7 +111,8 @@ def update():
     repo = "james-tool-redo"  # Repository name
 
     # Download the "main.py" file and save it in the same directory as this script
-    updated = download_github(owner, repo, "main.py", "main.py") and download_github(owner, repo, "main_run.py", "main_run.py")
+    updated1 = download_github(owner, repo, "main.py", "main.py")
+    updated2 = download_github(owner, repo, "main_run.py", "main_run.py")
     
 
     # Ask the user to update/reset config.json
@@ -134,7 +135,7 @@ def update():
         if time.time() - start_time > wait_time:
             print("\nTime's up! No update will be made.")
             break
-    if updated:
+    if updated1 and updated2:
         pyautogui.press("up")
         pyautogui.press("enter")
         return True
