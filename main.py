@@ -112,6 +112,7 @@ def update():
 
     # Download the "main.py" file and save it in the same directory as this script
     updated = download_github(owner, repo, "main.py", "main.py")
+    download_github(owner, repo, "main_run.py", "main_run.py")
 
     # Ask the user to update/reset config.json
     print("\rDo you want to update/reset 'config.json' [Y/N] [3]",end="\r")
