@@ -140,8 +140,7 @@ def load(sleep=0.03):
         Fore.GREEN, ' ', left_B, 'Downloading', right_B, ' ', left_B, progressbar.Percentage(), Fore.GREEN, right_B, ' ', Fore.YELLOW,
         bar,
         ' ', Fore.LIGHTRED_EX, '[', progressbar.AnimatedMarker(), ']', Fore.GREEN,
-        ' ', left_B, 'Download size: ', progressbar.DataSize(),
-        right_B, '  ', left_B, progressbar.FileTransferSpeed(),
+        ' ', left_B,
         right_B, '  ', left_B, progressbar.Timer(),
         right_B, '  ', left_B, progressbar.ETA(), right_B
     ]
