@@ -321,8 +321,10 @@ def help():
         # Remove the "mods\\" prefix from each file path for display
         print(f"- {file.replace('mods\\', '').replace('.py', '')}")
 
-
 def debug():
+    bang()
+
+def code():
     # Read a file with specific encoding
     with open('main.py', 'r', encoding='utf-8') as file:
         content = file.read()
@@ -337,7 +339,8 @@ commands = {
     "clear": clear,
     "time": lambda: print(time.ctime()),
     "bang": bang,
-    "hak": hak
+    "hak": hak,
+    "code": code
 }
 
 bypass = False
