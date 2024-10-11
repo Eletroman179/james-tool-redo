@@ -117,7 +117,7 @@ def get_readme(owner, repo):
     :param repo: Repository name
     """
     # API URL to fetch the version
-    api_url = f"https://api.github.com/repos/{owner}/{repo}/version"
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/contents/version"
     headers = {"Accept": "application/vnd.github.v3.raw"}  # Raw content header
 
     # Make the request to the GitHub API
