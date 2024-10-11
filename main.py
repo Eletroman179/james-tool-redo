@@ -113,12 +113,13 @@ def update():
     download_github(owner, repo, "main.py", "main.py")
 
     # Ask the user to update/reset config.json
-    print("\rDo you want to update/reset 'config.json' [Y/N] [5]",end="\r")
+    print("Do you want to update/reset 'config.json' [Y/N]?")
 
     # Start a timer for 3 seconds
+    start_time = time.time()
     wait_time = 3  # Wait for 3 seconds
 
-    for remaining in range(wait_time, 0, -1):
+    while True:
         # Check for keyboard input
         if keyboard.is_pressed("y"):
             download_github(owner, repo, "config.json", "config.json")
@@ -126,11 +127,10 @@ def update():
         if keyboard.is_pressed("n"):
             print("Update canceled.")
             break
-        print(f"\rDo you want to update/reset 'config.json' [Y/N] [{remaining}]",end="\r")
-        time.sleep(1)
-    else:
-        print(f"Time's up! No update will be made.{" " * os.get_terminal_size().columns}")
-
+        # Break the loop after 3 seconds
+        if time.time() - start_time > wait_time:
+            print("\nTime's up! No update will be made.")
+            break
 
 def load(sleep=0.03):
     left_B = Fore.LIGHTBLUE_EX + "[" + Fore.GREEN
