@@ -99,6 +99,7 @@ def download_github(owner, repo, path, save_filename):
             with open(save_path, 'wb') as file:
                 file.write(response.content)
             print(f"\n✅ File downloaded and saved to: {save_path}\n")
+            return True
         else:
             # Error message for failed download
             print(f"❌ Error: Unable to download the file (HTTP {response.status_code}).")
@@ -110,7 +111,7 @@ def update():
     repo = "james-tool-redo"  # Repository name
 
     # Download the "main.py" file and save it in the same directory as this script
-    download_github(owner, repo, "main.py", "main.py")
+    updated = download_github(owner, repo, "main.py", "main.py")
 
     # Ask the user to update/reset config.json
     print("\rDo you want to update/reset 'config.json' [Y/N] [3]",end="\r")
@@ -132,6 +133,10 @@ def update():
         if time.time() - start_time > wait_time:
             print("\nTime's up! No update will be made.")
             break
+    if updated:
+        pyautogui.press("up")
+        pyautogui.press("enter")
+        return True
 
 def load(sleep=0.03):
     left_B = Fore.LIGHTBLUE_EX + "[" + Fore.GREEN
@@ -359,10 +364,10 @@ def main():
 if __name__ == "__main__":
     try:
         clear(nom=False)
-        update()
-        load()
-        main()
-        with open("config.json", "w") as file:
-            json.dump(data, file, indent=4)
+        if not update():
+            load()
+            main()
+            with open("config.json", "w") as file:
+                json.dump(data, file, indent=4)
     except KeyboardInterrupt:
         print(f"\n{Fore.RED}Program terminated.{Fore.RESET}")
