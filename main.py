@@ -51,6 +51,9 @@ Prompt = f"""
 {platform.system()}@james-tool
 ↪ """
 
+path = os.path.dirname(os.path.abspath(__file__))
+os.chdir(path=path)
+
 # Load configuration data
 try:
     with open("config.json", "r") as file:
