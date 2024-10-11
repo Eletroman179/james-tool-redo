@@ -1,12 +1,12 @@
 from colorama import *
 import progressbar
-import time as t
 import pyautogui
 import requests
 import keyboard
 import platform
 import shutil
 import runpy
+import time
 import json
 import sys
 import os
@@ -152,7 +152,7 @@ def load(sleep=0.03):
 
     # Simulate a task by updating the progress bar in a loop
     for i in range(total_steps):
-        t.sleep(sleep)
+        time.sleep(sleep)
         progress.update(i + 1)
         print(Fore.GREEN, end="\r")
 
@@ -210,12 +210,12 @@ def gradient_background(start_hex, end_hex, steps):
 
         # Set background color
         set_background_color(f'#{r:02X}{g:02X}{b:02X}')
-        t.sleep(0.05)  # Delay to see the gradient effect
+        time.sleep(0.05)  # Delay to see the gradient effect
 
 def bang():
     clear(nom=False)
     set_background_color('#FFFFFF')
-    t.sleep(2)
+    time.sleep(2)
     gradient_background('#FFFFFF', '#000000', steps=50)
     clear()
 
@@ -223,7 +223,7 @@ def YesNo(question="", default=1):
     print(question)
     scl = default
     scl_dis = f" {"[yes]" if scl == 1 else " yes "} {"[no]" if scl == 2 else " no "} "
-    t.sleep(0.2)
+    time.sleep(0.2)
     while True:
         scl_dis = f"\r {'[yes]' if scl == 1 else ' yes '} {'[no]' if scl == 2 else ' no '} "
         sys.stdout.write(scl_dis)
@@ -231,10 +231,10 @@ def YesNo(question="", default=1):
 
         if keyboard.is_pressed("left"):
             scl -= 1
-            t.sleep(0.2)
+            time.sleep(0.2)
         if keyboard.is_pressed("right"):
             scl += 1
-            t.sleep(0.2)
+            time.sleep(0.2)
         if keyboard.is_pressed("enter"):
             break
 
@@ -294,12 +294,10 @@ def help():
         # Remove the "mods\\" prefix from each file path for display
         print(f"- {file.replace('mods\\', '').replace('.py', '')}")
 
-def time():
-    print(t.ctime())
 
 def debug():
     print("there is NO debug.")
-    t.sleep(1)
+    time.sleep(1)
     bang()
 # Define the commands dictionary correctly
 commands = {
@@ -308,7 +306,7 @@ commands = {
     "help": help,
     "cls": clear,
     "clear": clear,
-    "time": time,
+    "time": lambda: print(time.ctime()),
     "bang": bang
 }
 
