@@ -125,6 +125,7 @@ def get_readme(owner, repo):
 
     if response.status_code == 200:
         # Print the content of the version
+        print("version")
         print(response.text)  # The content will be in Markdown format
     else:
         print(f"Error: Unable to fetch README (HTTP {response.status_code}).")
