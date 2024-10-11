@@ -223,11 +223,15 @@ def gradient_background(start_hex, end_hex, steps):
 
 def hak():
     x = 0.03
-    while True:
-        print(Fore.GREEN)
-        for i in range(random.randint(20, 100)):
-            print(str(random.randint(0,1)), end="")
-        time.sleep(x)
+    print(Fore.GREEN)
+    try:
+        while True:
+            print(Fore.GREEN)
+            for i in range(random.randint(20, 100)):
+                print(str(random.randint(0,1)), end="")
+            time.sleep(x)
+    except:
+        pass
 
 def bang():
     clear(nom=False)
