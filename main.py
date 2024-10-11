@@ -51,6 +51,9 @@ Prompt = f"""
 {platform.system()}@james-tool
 ↪ """
 
+path = os.path.dirname(os.path.abspath(__file__))
+os.chdir(path)
+
 # Load configuration data
 try:
     with open("config.json", "r") as file:
@@ -321,10 +324,8 @@ def help():
         # Remove the "mods\\" prefix from each file path for display
         print(f"- {file.replace('mods\\', '').replace('.py', '')}")
 
-def debug():
-    bang()
 
-def code():
+def debug():
     # Read a file with specific encoding
     with open('main.py', 'r', encoding='utf-8') as file:
         content = file.read()
@@ -339,8 +340,7 @@ commands = {
     "clear": clear,
     "time": lambda: print(time.ctime()),
     "bang": bang,
-    "hak": hak,
-    "code": code
+    "hak": hak
 }
 
 bypass = False
