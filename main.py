@@ -229,6 +229,7 @@ def hak():
             print(Fore.GREEN)
             for i in range(random.randint(20, 100)):
                 print(str(random.randint(0,1)), end="")
+            if keyboard.is_pressed("esc"): break
             time.sleep(x)
     except:
         pass
