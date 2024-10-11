@@ -122,18 +122,21 @@ def update():
     # Start a timer for 3 seconds
     start_time = time.time()
     wait_time = 3  # Wait for 3 seconds
+    stop = False
 
     while True:
         # Check for keyboard input
-        print(f"\rDo you want to update/reset 'config.json' [Y/N] [{str(int(time.time() - start_time + 1))}]",end="\r")
+        print(f"\rDo you want to update/reset 'config.json' [Y/S/N] [{str(int(time.time() - start_time + 1))}]",end="\r")
         if keyboard.is_pressed("y"):
             download_github(owner, repo, "config.json", "config.json")
             break
         if keyboard.is_pressed("n"):
             print("Update canceled.")
             break
+        if keyboard.is_pressed("s"):
+            stop = not stop
         # Break the loop after 3 seconds
-        if time.time() - start_time > wait_time:
+        if time.time() - start_time > wait_time and not stop:
             print("\nTime's up! No update will be made.")
             break
     if updated:
