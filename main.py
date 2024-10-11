@@ -109,12 +109,32 @@ def download_github(owner, repo, path, save_filename):
             print(f"❌ Error: Unable to download the file (HTTP {response.status_code}).")
             print(f"Message: {response.text}")
 
+def get_readme(owner, repo):
+    """
+    Get the README file from a GitHub repository.
+
+    :param owner: GitHub username or organization name
+    :param repo: Repository name
+    """
+    # API URL to fetch the version
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/version"
+    headers = {"Accept": "application/vnd.github.v3.raw"}  # Raw content header
+
+    # Make the request to the GitHub API
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        # Print the content of the version
+        print(response.text)  # The content will be in Markdown format
+    else:
+        print(f"Error: Unable to fetch README (HTTP {response.status_code}).")
 
 def update():
     owner = "Eletroman179"  # GitHub username
     repo = "james-tool-redo"  # Repository name
 
     # Download the "main.py" file and save it in the same directory as this script
+    get_readme(owner, repo)
     updated = download_github(owner, repo, "main.py", "main.py")
     download_github(owner, repo, "main_run.py", "main_run.py")
     
