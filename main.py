@@ -1,7 +1,7 @@
 from colorama import *
 import progressbar
-import pyautogui
 import time as t
+import pyautogui
 import keyboard
 import platform
 import shutil
