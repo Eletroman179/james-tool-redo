@@ -5,6 +5,7 @@ import requests
 import keyboard
 import platform
 import shutil
+import random
 import runpy
 import time
 import json
@@ -219,6 +220,14 @@ def gradient_background(start_hex, end_hex, steps):
         # Set background color
         set_background_color(f'#{r:02X}{g:02X}{b:02X}')
         time.sleep(0.05)  # Delay to see the gradient effect
+
+def hak():
+    x = 0.03
+    while True:
+        print(Fore.GREEN)
+        for i in range(random.randint(20, 100)):
+            print(str(random.randint(0,1)), end="")
+        time.sleep(x)
 
 def bang():
     clear(nom=False)
