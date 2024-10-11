@@ -323,11 +323,11 @@ def help():
 
 
 def debug():
-        # Read all lines into a list
-    with open('main.py', 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            print(line.strip())
+    # Read a file with specific encoding
+    with open('main.py', 'r', encoding='utf-8') as file:
+        content = file.read()
+        print(content)
+
 # Define the commands dictionary correctly
 commands = {
     "debug": debug,
