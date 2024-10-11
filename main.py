@@ -182,6 +182,7 @@ def clear(nom=True):
         elif data["title"]["old_title"]:
             print(oldJt)
 
+
 def flush_keyboard():
     print()
     prompt = ''
@@ -322,9 +323,11 @@ def help():
 
 
 def debug():
-    print("there is NO debug.")
-    time.sleep(1)
-    bang()
+        # Read all lines into a list
+    with open('main.py', 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            print(line.strip())
 # Define the commands dictionary correctly
 commands = {
     "debug": debug,
