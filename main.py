@@ -336,7 +336,7 @@ def help():
     print("- exec")
     for cmd in commands.keys():
         print(f"- {cmd}")
-    # Find Python files in the 'mods' directory
+    # Find Python files in the mods directory
     python_files = find_files("mods\\", ".py")
     if python_files:
         print("mods command:")
