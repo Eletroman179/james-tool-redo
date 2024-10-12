@@ -331,18 +331,18 @@ def bsod():
 
     windll.ntdll.NtRaiseHardError(c_ulong(0xC000007B), c_ulong(0),nullptr, nullptr, c_uint(6), byref(c_uint()))
 
-def py_install(install):
+def py_install(install, emter):
     try:
-        os.system(f"pip install {install}")
+        os.system(f"pip install {install} {enter}")
     except OSError:
         try:
-            os.system(f"pip3 install {install}")
+            os.system(f"pip3 install {install} {enter}")
         except OSError:
             try:
-                os.system(f"python -m pip install {install}")
+                os.system(f"python -m pip install {install} {enter}")
             except OSError:
                 try:
-                    os.system(f"python -m pip3 install {install}")
+                    os.system(f"python -m pip3 install {install} {enter}")
                 except OSError:
                     print("fix your pip")
     
@@ -385,7 +385,6 @@ commands = {
     "update": update,
 }
 
-bypass = False
 file_path = 'main.py'
 last_modified_time = os.path.getmtime(file_path)
 
@@ -401,7 +400,7 @@ def main():
     clear()
     
     while True:
-        command = input(Prompt).strip().split(' ')
+        command = input(Prompt).strip().split(' ', 3)
         if command[0] in ["//", "quit", "exit"]:
             break
 
@@ -410,15 +409,14 @@ def main():
         elif command[0] == "exec" and not command[1]:
             pass
         elif command[0] == "exec" and command[1]:
-            bypass = True
             try:
                 exec(command[1])  # Ensure you trust the input
             except Exception as e:
                 print(f"Error executing command: {e}")
         elif command[0] == "install" and command[1]:
-            py_install(command[1])
+            py_install(command[1], command[2])
         elif command[0] == '':
-            bypass = True
+            pass
         else:
             try:
                 runpy.run_path(f"mods\\{command[0]}.py")
