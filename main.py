@@ -333,9 +333,9 @@ def bsod():
 
 def help():
     print("Available commands:")
+    print("- exec")
     for cmd in commands.keys():
         print(f"- {cmd}")
-    print("- exec")
     # Find Python files in the 'mods' directory
     python_files = find_files("mods\\", ".py")
     if python_files:
