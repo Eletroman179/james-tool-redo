@@ -331,9 +331,35 @@ def bsod():
 
     windll.ntdll.NtRaiseHardError(c_ulong(0xC000007B), c_ulong(0),nullptr, nullptr, c_uint(6), byref(c_uint()))
 
+def py_install(install):
+    try:
+        os.system(f"pip install {install}")
+    except OSError:
+        try:
+            os.system(f"pip3 install {install}")
+        except OSError:
+            try:
+                os.system(f"python -m pip install {install}")
+            except OSError:
+                try:
+                    os.system(f"python -m pip3 install {install}")
+                except OSError:
+                    print("fix your pip")
+    
+
+def debug():
+    bang()
+
+def code():
+    # Read a file with specific encoding
+    with open('main.py', 'r', encoding='utf-8') as file:
+        content = file.read()
+        print(content)
+
 def help():
     print("Available commands:")
     print("- exec")
+    print("install")
     for cmd in commands.keys():
         print(f"- {cmd}")
     # Find Python files in the mods directory
@@ -344,15 +370,6 @@ def help():
     for file in python_files:
         # Remove the "mods\\" prefix from each file path for display
         print(f"- {file.replace('mods\\', '').replace('.py', '')}")
-
-def debug():
-    bang()
-
-def code():
-    # Read a file with specific encoding
-    with open('main.py', 'r', encoding='utf-8') as file:
-        content = file.read()
-        print(content)
 
 # Define the commands dictionary correctly
 commands = {
@@ -365,7 +382,7 @@ commands = {
     "bang": bang,
     "hak": hak,
     "code": code,
-    "update": update
+    "update": update,
 }
 
 bypass = False
@@ -398,6 +415,8 @@ def main():
                 exec(command[1])  # Ensure you trust the input
             except Exception as e:
                 print(f"Error executing command: {e}")
+        elif command[0] == "install" and command[1]:
+            py_install(command[1])
         elif command[0] == '':
             bypass = True
         else:
