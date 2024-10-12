@@ -355,7 +355,10 @@ def code():
     with open('main.py', 'r', encoding='utf-8') as file:
         content = file.read()
         print(content)
-
+    print("=" * len(__file__))
+    print(f" {__file__} ")
+    print("=" * len(__file__))
+    
 def help():
     print("Available commands:")
     print("- exec")
