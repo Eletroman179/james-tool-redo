@@ -359,7 +359,7 @@ def code():
 def help():
     print("Available commands:")
     print("- exec")
-    print("install")
+    print("- install")
     for cmd in commands.keys():
         print(f"- {cmd}")
     # Find Python files in the mods directory
