@@ -364,7 +364,8 @@ commands = {
     "time": lambda: print(time.ctime()),
     "bang": bang,
     "hak": hak,
-    "code": code
+    "code": code,
+    "update": update
 }
 
 bypass = False
