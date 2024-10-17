@@ -1,19 +1,16 @@
-try:
-    from colorama import *
-    import progressbar
-    import pyautogui
-    import requests
-    import keyboard
-    import platform
-    import shutil
-    import random
-    import runpy
-    import time
-    import json
-    import sys
-    import os
-except ImportError:
-    print("downloading packages")
+from colorama import *
+import progressbar
+import pyautogui
+import requests
+import keyboard
+import platform
+import shutil
+import random
+import runpy
+import time
+import json
+import sys
+import os
 
 # init colorama
 init(autoreset=True)
