@@ -1,19 +1,62 @@
-from colorama import *
-import progressbar
-import pyautogui
-import requests
-import keyboard
-import platform
-import shutil
-import random
-import runpy
-import time
-import json
-import sys
-import os
+try:
+    from colorama import *
+    import progressbar
+    import pyautogui
+    import requests
+    import keyboard
+    import platform
+    import shutil
+    import random
+    import runpy
+    import time
+    import json
+    import sys
+    import os
+except ImportError:
+    print("downloading packages")
 
 # init colorama
 init(autoreset=True)
+
+# Define the required packages
+required_packages = [
+    'colorama',
+    'progressbar2',  # Note: Change to 'progressbar2' since 'progressbar' is often not available
+    'pyautogui',
+    'requests',
+    'keyboard',
+    'platform',
+    'shutil',
+    'runpy',
+    'json'
+]
+
+# Function to check and install required packages
+def install_packages():
+    for package in required_packages:
+        try:
+            __import__(package)
+        except ImportError:
+            print(f"Installing {package}...")
+            py_install(package, '')
+
+def py_install(install, enter=''):
+    try:
+        os.system(f"pip install {install}{enter}")
+    except OSError:
+        try:
+            os.system(f"pip3 install {install}{enter}")
+        except OSError:
+            try:
+                os.system(f"python -m pip install {install}{enter}")
+            except OSError:
+                try:
+                    os.system(f"python -m pip3 install {install}{enter}")
+                except OSError:
+                    print("Fix your pip installation.")
+
+# Initialize package installations
+install_packages()
 
 oldJt = Fore.LIGHTCYAN_EX + """
 ██████████████████████████████████████████████████████████████████████████████████████████
