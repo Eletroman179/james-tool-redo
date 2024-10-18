@@ -1,5 +1,6 @@
 from colorama import *
 import progressbar
+import subprocess
 import pyautogui
 import requests
 import keyboard
@@ -25,32 +26,23 @@ required_packages = [
     'platform',
     'shutil',
     'runpy',
-    'json'
 ]
 
 # Function to check and install required packages
-def install_packages():
-    for package in required_packages:
-        try:
-            __import__(package)
-        except ImportError:
-            print(f"Installing {package}...")
-            py_install(package, '')
+def install_packages(package):
+    try:
+        # Try to import the package
+        __import__(package)
+    except ImportError:
+        # If the package is not installed, install it using pip
+        print(f"Installing {package}...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+        print(f"{package} installed successfully!")
+        # Try to import the package again after installation
+        __import__(package)
 
 def py_install(install, enter=''):
-    try:
-        os.system(f"pip install {install}{enter}")
-    except OSError:
-        try:
-            os.system(f"pip3 install {install}{enter}")
-        except OSError:
-            try:
-                os.system(f"python -m pip install {install}{enter}")
-            except OSError:
-                try:
-                    os.system(f"python -m pip3 install {install}{enter}")
-                except OSError:
-                    print("Fix your pip installation.")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package, enter])
 
 # Initialize package installations
 install_packages()
@@ -101,6 +93,11 @@ try:
 except (FileNotFoundError, json.JSONDecodeError) as e:
     print(f"Error loading configuration: {e}")
     sys.exit(1)
+
+def restart_program():
+    """Restarts the current program."""
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
 
 def download_github(owner, repo, path, save_filename):
         """
@@ -469,8 +466,7 @@ def main():
         # Check if the file has been updated
         if file_updated(file_path, last_modified_time):
             print("File updated, re-running...")
-            pyautogui.press("up")
-            pyautogui.press("enter")
+            restart_program()
             break
 
 if __name__ == "__main__":
