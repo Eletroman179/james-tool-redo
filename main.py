@@ -179,36 +179,6 @@ def update():
         pyautogui.press("enter")
         return True
 
-def load(sleep=0.03, total_steps=100):  # Specify total_steps here or pass it as an argument
-    print(f"Total steps: {total_steps}")  # Debugging line
-
-    left_B = Fore.LIGHTBLUE_EX + "[" + Fore.GREEN
-    right_B = Fore.LIGHTBLUE_EX + "]" + Fore.GREEN
-    bar = progressbar.Bar(marker='█', left=f'{left_B}{Fore.YELLOW}║', right=f'║{right_B}')
-
-    widgets = [
-        Fore.GREEN, ' ', left_B, 'Downloading', right_B, ' ', left_B, progressbar.Percentage(), Fore.GREEN, right_B, ' ', Fore.YELLOW,
-        bar,
-        ' ', Fore.LIGHTRED_EX, '[', progressbar.AnimatedMarker(), ']', Fore.GREEN,
-        ' ', left_B, 'Download speed: ', progressbar.FileTransferSpeed(),
-        right_B, '  ', left_B, progressbar.Timer(),
-        right_B, '  ', left_B, progressbar.ETA(), right_B
-    ]
-
-    # Initialize the ProgressBar object with widgets and set max_value
-    progress = progressbar.ProgressBar(widgets=widgets)
-
-    # Simulate a task by updating the progress bar in a loop
-    for i in range(total_steps):  # Use total_steps for the loop
-        time.sleep(sleep)
-        progress.update(int(i + 1))
-        print(Fore.GREEN, end="\r")
-
-    # Ensure the progress bar is properly finished
-    progress.finish()
-    print(Fore.RESET)
-
-
 def clear(nom=True):
     global data
     os.system("cls" if platform.system() == "Windows" else "clear")
@@ -448,7 +418,6 @@ if __name__ == "__main__":
     try:
         clear(nom=False)
         if not update():
-            load()
             main()
             with open("config.json", "w") as file:
                 json.dump(data, file, indent=4)
