@@ -180,10 +180,12 @@ def update():
         return True
 
 def load(sleep=0.03, total_steps=100):  # Specify total_steps here or pass it as an argument
+    print(f"Total steps: {total_steps}")  # Debugging line
+
     left_B = Fore.LIGHTBLUE_EX + "[" + Fore.GREEN
     right_B = Fore.LIGHTBLUE_EX + "]" + Fore.GREEN
     bar = progressbar.Bar(marker='█', left=f'{left_B}{Fore.YELLOW}║', right=f'║{right_B}')
-    
+
     widgets = [
         Fore.GREEN, ' ', left_B, 'Downloading', right_B, ' ', left_B, progressbar.Percentage(), Fore.GREEN, right_B, ' ', Fore.YELLOW,
         bar,
@@ -192,9 +194,9 @@ def load(sleep=0.03, total_steps=100):  # Specify total_steps here or pass it as
         right_B, '  ', left_B, progressbar.Timer(),
         right_B, '  ', left_B, progressbar.ETA(), right_B
     ]
-    
+
     # Initialize the ProgressBar object with widgets and set max_value
-    progress = progressbar.ProgressBar(widgets=widgets)
+    progress = progressbar.ProgressBar(max_value=total_steps, widgets=widgets)
 
     # Simulate a task by updating the progress bar in a loop
     for i in range(total_steps):  # Use total_steps for the loop
@@ -205,6 +207,7 @@ def load(sleep=0.03, total_steps=100):  # Specify total_steps here or pass it as
     # Ensure the progress bar is properly finished
     progress.finish()
     print(Fore.RESET)
+
 
 def clear(nom=True):
     global data
