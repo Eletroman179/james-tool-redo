@@ -16,37 +16,9 @@ import os
 # init colorama
 init(autoreset=True)
 
-# Define the required packages
-required_packages = [
-    'colorama',
-    'progressbar',  # Note: Change to 'progressbar2' since 'progressbar' is often not available
-    'pyautogui',
-    'requests',
-    'keyboard',
-    'platform',
-    'shutil',
-    'runpy',
-]
-
-# Function to check and install required packages
-def install_packages(packages):
-    for package in packages:
-        try:
-            # Try to import the package
-            __import__(package)
-        except ImportError:
-            # If the package is not installed, install it using pip
-            print(f"Installing {package}...")
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-            print(f"{package} installed successfully!")
-            # Try to import the package again after installation
-            __import__(package)
 
 def py_install(install, enter=''):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package, enter])
-
-# Initialize package installations
-install_packages(required_packages)
 
 oldJt = Fore.LIGHTCYAN_EX + """
 ██████████████████████████████████████████████████████████████████████████████████████████
