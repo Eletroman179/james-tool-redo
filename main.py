@@ -73,24 +73,26 @@ def restart_program():
     os.execl(python, python, *sys.argv)
 
 def download_github(owner, repo, path, save_filename):
-        """
-        Download a file from a GitHub repository using GitHub API.
+    """
+    Download a file from a GitHub repository using GitHub API.
 
-        :param owner: GitHub username or organization name
-        :param repo: Repository name
-        :param path: Path to the file in the repository
-        :param save_filename: Name to save the file locally
-        """
-        # Determine the save path relative to the current script's directory
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        save_path = os.path.join(current_dir, save_filename)
+    :param owner: GitHub username or organization name
+    :param repo: Repository name
+    :param path: Path to the file in the repository
+    :param save_filename: Name to save the file locally
+    """
+    # Determine the save path relative to the current script's directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    save_path = os.path.join(current_dir, save_filename)
 
-        # GitHub API URL to fetch the raw file contents
-        api_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
-        headers = {"Accept": "application/vnd.github.v3.raw"}  # Raw content header
+    # GitHub API URL to fetch the raw file contents
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
+    headers = {"Accept": "application/vnd.github.v3.raw"}  # Raw content header
 
-        print(f"\nChecking '{path}' in GitHub repository '{owner}/{repo}'...")
+    print(f"\nChecking '{path}' in GitHub repository '{owner}/{repo}'...")
 
+    # Attempt to download the file with retry mechanism
+    for attempt in range(5):  # Allow up to 5 attempts
         # Make the request to GitHub API
         response = requests.get(api_url, headers=headers)
 
@@ -114,10 +116,20 @@ def download_github(owner, repo, path, save_filename):
                 file.write(response.content)
             print(f"\n✅ File downloaded and saved to: {save_path}\n")
             return True
+        
+        if response.status_code == 403:
+            wait_time = 60 * (2 ** attempt)  # Exponential backoff: 60, 120, 240, ...
+            wait_time = min(wait_time, 300)  # Cap the wait time at 5 minutes (300 seconds)
+            print(f"❌ Download failed due to 403 error. Retrying in {wait_time // 60} minute(s)...")
+            time.sleep(wait_time)  # Wait before retrying
         else:
             # Error message for failed download
             print(f"❌ Error: Unable to download the file (HTTP {response.status_code}).")
             print(f"Message: {response.text}")
+            return False  # Exit the function after handling the error
+
+    print("⚠️ All attempts to download the file failed.")
+    return False
 
 def get_readme(owner, repo):
     """
