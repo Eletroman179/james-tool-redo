@@ -183,6 +183,7 @@ def load(sleep=0.03):
     left_B = Fore.LIGHTBLUE_EX + "[" + Fore.GREEN
     right_B = Fore.LIGHTBLUE_EX + "]" + Fore.GREEN
     bar = progressbar.Bar(marker='█', left=f'{left_B}{Fore.YELLOW}║', right=f'║{right_B}')
+    
     widgets = [
         Fore.GREEN, ' ', left_B, 'Downloading', right_B, ' ', left_B, progressbar.Percentage(), Fore.GREEN, right_B, ' ', Fore.YELLOW,
         bar,
@@ -191,13 +192,12 @@ def load(sleep=0.03):
         right_B, '  ', left_B, progressbar.Timer(),
         right_B, '  ', left_B, progressbar.ETA(), right_B
     ]
-    # Define the total number of steps
-    total_steps = 100
+    
     # Initialize the ProgressBar object with widgets
-    progress = progressbar.ProgressBar(max_value=total_steps, widgets=widgets).start()
+    progress = progressbar.ProgressBar(widgets=widgets)
 
     # Simulate a task by updating the progress bar in a loop
-    for i in range(total_steps):
+    for i in range(100):  # Assuming 100 steps for the progress
         time.sleep(sleep)
         progress.update(i + 1)
         print(Fore.GREEN, end="\r")
