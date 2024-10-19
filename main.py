@@ -179,7 +179,7 @@ def update():
         pyautogui.press("enter")
         return True
 
-def load(sleep=0.03):
+def load(sleep=0.03, total_steps=100):  # Specify total_steps here or pass it as an argument
     left_B = Fore.LIGHTBLUE_EX + "[" + Fore.GREEN
     right_B = Fore.LIGHTBLUE_EX + "]" + Fore.GREEN
     bar = progressbar.Bar(marker='█', left=f'{left_B}{Fore.YELLOW}║', right=f'║{right_B}')
@@ -193,11 +193,11 @@ def load(sleep=0.03):
         right_B, '  ', left_B, progressbar.ETA(), right_B
     ]
     
-    # Initialize the ProgressBar object with widgets
-    progress = progressbar.ProgressBar(widgets=widgets)
+    # Initialize the ProgressBar object with widgets and set max_value
+    progress = progressbar.ProgressBar(max_value=total_steps, widgets=widgets)
 
     # Simulate a task by updating the progress bar in a loop
-    for i in range(100):  # Assuming 100 steps for the progress
+    for i in range(total_steps):  # Use total_steps for the loop
         time.sleep(sleep)
         progress.update(i + 1)
         print(Fore.GREEN, end="\r")
