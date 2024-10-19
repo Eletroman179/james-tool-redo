@@ -201,7 +201,7 @@ def load(sleep=0.03, total_steps=100):  # Specify total_steps here or pass it as
     # Simulate a task by updating the progress bar in a loop
     for i in range(total_steps):  # Use total_steps for the loop
         time.sleep(sleep)
-        progress.update(i + 1)
+        progress.update(int(i + 1))
         print(Fore.GREEN, end="\r")
 
     # Ensure the progress bar is properly finished
