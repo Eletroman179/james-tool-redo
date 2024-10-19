@@ -194,7 +194,7 @@ def load(sleep=0.03, total_steps=100):  # Specify total_steps here or pass it as
     ]
     
     # Initialize the ProgressBar object with widgets and set max_value
-    progress = progressbar.ProgressBar(max_value=total_steps, widgets=widgets)
+    progress = progressbar.ProgressBar(widgets=widgets)
 
     # Simulate a task by updating the progress bar in a loop
     for i in range(total_steps):  # Use total_steps for the loop
