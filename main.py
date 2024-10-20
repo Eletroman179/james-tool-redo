@@ -5,13 +5,17 @@ import pyautogui
 import requests
 import keyboard
 import platform
+import termios
 import shutil
 import random
 import runpy
 import time
 import json
+import tty
 import sys
 import os
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # init colorama
 init(autoreset=True)
@@ -190,6 +194,53 @@ def update():
         pyautogui.press("up")
         pyautogui.press("enter")
         return True
+
+def suppress_key_echo():
+    """ Disable echoing of keypresses in the terminal. """
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    tty.setcbreak(fd)
+    return old_settings
+
+
+def restore_key_echo(old_settings):
+    """ Restore the terminal keypress echoing. """
+    fd = sys.stdin.fileno()
+    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
+def choice(question, answer):
+    RUN = True
+    scl = 1
+    max_scl = len(answer)
+
+    print(question)
+
+    old_settings = suppress_key_echo()  # Disable key echo
+
+    try:
+        while RUN:
+            sys.stdout.write("\r")
+            sys.stdout.flush()
+
+            for j, i in enumerate(answer):
+                sys.stdout.write(f"{f'[{i}]' if scl == (j + 1) else f' {i} '} ")
+
+            if keyboard.is_pressed("left"):
+                scl -= 1
+                if scl < 1:
+                    scl = max_scl
+                time.sleep(0.3)
+
+            if keyboard.is_pressed("right"):
+                scl += 1
+                if scl > max_scl:
+                    scl = 1
+                time.sleep(0.3)
+            if keyboard.is_pressed("enter"):
+                return answer[scl-1]
+
+    finally:
+        restore_key_echo(old_settings)  # Re-enable key echo after exit
 
 def clear(nom=True):
     global data
