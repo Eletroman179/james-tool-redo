@@ -22,7 +22,7 @@ init(autoreset=True)
 
 
 def py_install(install, enter=''):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package, enter])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", install, enter])
 
 oldJt = Fore.LIGHTCYAN_EX + """
 ██████████████████████████████████████████████████████████████████████████████████████████
