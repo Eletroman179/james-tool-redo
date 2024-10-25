@@ -1,3 +1,29 @@
+import os
+package = [
+    "colorama",
+    "progressbar",
+    "subprocess",
+    "pyautogui",
+    "requests",
+    "keyboard",
+    "platform",
+    "termios",
+    "shutil",
+    "random",
+    "runpy",
+    "time",
+    "json",
+    "tty",
+    "sys",
+    "os"
+]
+
+try:
+    for install in package:
+        __import__(install)
+except:
+    for install in package:
+        os.system(f"python -m pip install {install}")
 from colorama import *
 import progressbar
 import subprocess
